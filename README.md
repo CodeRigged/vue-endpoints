@@ -77,11 +77,11 @@ In Vue component:
 export default  {
   computed: {
     option1(){
-        return this.$baseApi.get('/url/to/api');
+        return this.$baseApi.get("/url/to/api");
     },
     //or
     option2(){
-        return this.$apiEndpoints.getApi('nameOfApi').get('/url/to/api');
+        return this.$apiEndpoints.getApi("nameOfApi").get("/url/to/api");
     },
   },
 }
@@ -94,8 +94,8 @@ export default  {
 
 ```js
 const vueEndpoints = createVueEndpoints({
-    /* Default base API will be the first API instance of Array */
-    baseApi: "optional", 
+    /* Default base API will be the first API instance of instances-array */
+    baseApi: "someName", 
   [{name:"someName", configs:{...axiosConfigurations}}],
 });
 ```
@@ -106,7 +106,7 @@ const vueEndpoints = createVueEndpoints({
 const vueEndpoints = createVueEndpoints({
   [{name:"someName", configs:{...axiosConfigurations}}],
 });
-vueEndpoints.setBaseApi('myBaseApi')
+vueEndpoints.setBaseApi("someName")
 ```
 
 #### getApi(name: string): AxiosInstance | undefined;
@@ -116,16 +116,14 @@ const vueEndpoints = createVueEndpoints({
   [{name:"someName", configs:{...axiosConfigurations}}],
 });
 
-const someNameApi = vueEndpoints.getApi('someName');
+const someNameApi = vueEndpoints.getApi("someName");
 
 ```
 
 #### apiInstances: ApiInstances[]
 ```html
 <template>
-  <div class="about">
-    <h1>{{ myInstances[0].name }}</h1>
-  </div>
+    {{ myInstances[0].name }}
 </template>
 ```
 ```js
