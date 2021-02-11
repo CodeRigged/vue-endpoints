@@ -3,6 +3,7 @@
 node_modules
 /dist
 /types
+*.tgz
 
 # local env files
 .env.local

@@ -1,5 +1,5 @@
 {
-  "name": "vue-apis",
+  "name": "vue-endpoints",
   "version": "1.0.0",
   "description": "A small wrapper for projects with multiple api endpoints in vue.",
   "main": "dist/index.js",
@@ -20,11 +20,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CodeRigged/vue-apis.git"
+    "url": "git+https://github.com/CodeRigged/vue-endpoints.git"
   },
   "keywords": [
     "vue",
-    "vue-apis",
+    "vue-endpoints",
     "axios",
     "api",
     "endpoints"
@@ -32,9 +32,9 @@
   "author": "Timothy Antonovics",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CodeRigged/vue-apis/issues"
+    "url": "https://github.com/CodeRigged/vue-endpoints/issues"
   },
-  "homepage": "https://github.com/CodeRigged/vue-apis#readme",
+  "homepage": "https://github.com/CodeRigged/vue-endpoints#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",

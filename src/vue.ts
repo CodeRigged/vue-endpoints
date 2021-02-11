@@ -1,9 +1,9 @@
 import { AxiosInstance } from 'axios';
-import VueApis from '.';
+import VueEndpoints from '.';
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $apis: VueApis;
+        $apiEndpoints: VueEndpoints;
         $baseApi: AxiosInstance;
     }
 }

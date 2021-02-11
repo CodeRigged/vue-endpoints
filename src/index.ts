@@ -4,7 +4,7 @@ import './vue';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Apis, ApiInstances, PluginOptions } from './interfaces';
 
-export default class VueApis {
+export default class VueEndpoints {
     constructor(hosts?: PluginOptions) {
         if (typeof (hosts as PluginOptions) === 'object') {
             const { baseApi, apiInstances } = hosts as PluginOptions;
@@ -28,7 +28,7 @@ export default class VueApis {
     }
 
     install(app: App): void {
-        app.config.globalProperties.$apis = this;
+        app.config.globalProperties.$apiEndpoints = this;
         app.config.globalProperties.$baseApi = this.baseApi;
     }
 
@@ -76,6 +76,6 @@ export default class VueApis {
     }
 }
 
-export function createVueApis(params?: PluginOptions): VueApis {
-    return new VueApis(params);
+export function createVueEndpoints(params?: PluginOptions): VueEndpoints {
+    return new VueEndpoints(params);
 }
