@@ -116,7 +116,6 @@ export default  {
 
 ##### createVueEndpoints(params?: PluginOptions): VueEndpoints
 
-
 ```js
 const vueEndpoints = createVueEndpoints({
     /* Default base API will be the first API instance of instances-array */
@@ -146,6 +145,7 @@ const someNameApi = vueEndpoints.getApi("someName");
 ```
 
 #### apiInstances: ApiInstances[]
+
 ```html
 <template>
     {{ myInstances[0].name }}
@@ -162,10 +162,10 @@ export default {
 };
 </script>
 ```
+
 ## vue-2 compatibility
 
 For now this tool is only compatible in [vue-3](https://v3.vuejs.org/).
-
 
 ## License
 
