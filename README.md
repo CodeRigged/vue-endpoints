@@ -32,10 +32,23 @@ const configurationsFirstInstance: AxiosRequestConfig = {
 };
 const configurationsSecondInstance: AxiosRequestConfig = { baseURL: "/secondEndpoint" };
 
+const onSuccess = (config: AxiosRequestConfig) => {
+  const { method, baseURL = "", url } = config;
+  console.log(`%c Made ${method} request to ${baseURL + url}`, 'color:green; font-weight:800');
+  return config;
+};
+
 const apiInstances = [
-  { name: "firstInstance", configs: configurationsSecondInstance },
-  { name: "secondInstance", configs: configurationsFirstInstance },
+  {
+    name: "firstInstance",
+    configs: configurationsFirstInstance,
+    interceptors: {
+      request: { onSuccess },
+    },
+  },
+  { name: "secondInstance", configs: configurationsSecondInstance },
 ];
+
 const vueEndpoints: VueEndpoints = createVueEndpoints({
   baseApi: "firstInstance",
   apiInstances,
@@ -58,9 +71,21 @@ const configurationsFirstInstance = {
 };
 const configurationsSecondInstance = { baseURL: "/secondEndpoint" };
 
+const onSuccess = (config) => {
+  const { method, baseURL = "", url } = config;
+  console.log(`%c Made ${method} request to ${baseURL + url}`, 'color:green; font-weight:800');
+  return config;
+};
+
 const apiInstances = [
-  { name: "firstInstance", configs: configurationsSecondInstance },
-  { name: "secondInstance", configs: configurationsFirstInstance },
+  {
+    name: "firstInstance",
+    configs: configurationsFirstInstance,
+    interceptors: {
+      request: { onSuccess },
+    },
+  },
+  { name: "secondInstance", configs: configurationsSecondInstance },
 ];
 
 // alternative assignment
