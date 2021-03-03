@@ -2,14 +2,14 @@ import { App } from 'vue';
 import './vue';
 
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Apis, ApiInstances, PluginOptions } from './interfaces';
+import { Apis, ApiInstances, ApiInterceptors, PluginOptions, InterceptorIds } from './interfaces';
 
 export default class VueEndpoints {
     constructor(hosts?: PluginOptions) {
         if (typeof (hosts as PluginOptions) === 'object') {
             const { baseApi, apiInstances } = hosts as PluginOptions;
             if (baseApi === undefined) {
-                this.createBaseApi(apiInstances[0].configs);
+                this.createBaseApi(apiInstances[0].configs, apiInstances[0].interceptors);
             }
             this.apiInstances = this.removeInstancesWithDuplicateName(apiInstances);
             this.initializeApis(baseApi);
@@ -32,11 +32,17 @@ export default class VueEndpoints {
         app.config.globalProperties.$baseApi = this.baseApi;
     }
 
-    private createBaseApi(configs?: AxiosRequestConfig): void {
+    private createBaseApi(configs?: AxiosRequestConfig, interceptors?: ApiInterceptors): void {
         if (typeof this.baseApi === 'undefined') {
-            const baseApi = axios.create(configs);
+            let baseApi = axios.create(configs);
+            if (interceptors) {
+                const val = this.setInterceptors(baseApi, interceptors);
+                baseApi = val.instance;
+                this.apis.push({ name: 'baseApi', instance: baseApi, interceptorIds: val.interceptorsIds });
+            } else {
+                this.apis.push({ name: 'baseApi', instance: baseApi });
+            }
             this.baseApi = baseApi;
-            this.apis.push({ name: 'baseApi', instance: baseApi });
         } else {
             throw Error('An API instance has already been created!');
         }
@@ -53,9 +59,16 @@ export default class VueEndpoints {
 
     private initializeApis(baseApi?: string): void {
         this.apiInstances.forEach((apiInstance) => {
-            const { name, configs } = apiInstance;
-            const instance = axios.create(configs);
-            this.apis.push({ name, instance });
+            const { name, configs, interceptors } = apiInstance;
+
+            let instance = axios.create(configs);
+            if (interceptors) {
+                const val = this.setInterceptors(instance, interceptors);
+                instance = val.instance;
+                this.apis.push({ name, instance, interceptorIds: val.interceptorsIds });
+            } else {
+                this.apis.push({ name, instance });
+            }
             if (name === baseApi) {
                 this.baseApi = instance;
             }
@@ -73,6 +86,22 @@ export default class VueEndpoints {
             }
             return true;
         });
+    }
+    private setInterceptors(
+        instance: AxiosInstance,
+        interceptors: ApiInterceptors,
+    ): { instance: AxiosInstance; interceptorsIds: InterceptorIds } {
+        const { request, response } = interceptors;
+        const interceptorsIds: InterceptorIds = {};
+        if (request) {
+            const { onSuccess, onError } = request;
+            interceptorsIds.request = instance.interceptors.request.use(onSuccess, onError);
+        }
+        if (response) {
+            const { onResponse, onError } = response;
+            interceptorsIds.response = instance.interceptors.response.use(onResponse, onError);
+        }
+        return { instance, interceptorsIds };
     }
 }
 
